@@ -18,7 +18,7 @@ export const createServer = () => {
             credentials: true
         }))
 
-        app.use('/admin',authRouter)
+        app.use('/api/auth',authRouter)
 
         return app
 
