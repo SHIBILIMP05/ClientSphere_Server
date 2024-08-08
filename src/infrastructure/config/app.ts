@@ -3,7 +3,9 @@ import cors from 'cors'
 
 
 import authRouter from '../routes/authRouter'
+import dotenv from "dotenv"
 
+dotenv.config()
 export const createServer = () => {
 
     try {

@@ -1,11 +1,13 @@
 import AdminRepository from "../infrastructure/repositories/adminRepository";
 import IAdminUsecase from "../interfaces/IUseCases/IAdminUseCase";
 import { AdminOutPut } from "../interfaces/models/adminOutPut";
+import Jwt from "../providers/jwt";
 
 
 class AdminUseCase implements IAdminUsecase {
   constructor(
-    private readonly _adminRepo: AdminRepository
+    private readonly _adminRepo: AdminRepository,
+    private readonly _jwt:Jwt
   ) {}
 
   async login(email: string, password: string):Promise <AdminOutPut> {
@@ -17,9 +19,12 @@ class AdminUseCase implements IAdminUsecase {
           message: 'Invalid Credential'
         }
       }
+      const accessToken = this._jwt.createAccessToken(admin._id,'admin')
+
       return {
         status: 200,
-        message: 'Login Successfully'
+        message: 'Login Successfully',
+        accessToken:accessToken
       }
     } else {
       return {
