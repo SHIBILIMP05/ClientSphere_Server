@@ -4,6 +4,7 @@ import cors from 'cors'
 
 import authRouter from '../routes/authRouter'
 import dotenv from "dotenv"
+import adminRouter from '../routes/adminRouter'
 
 dotenv.config()
 export const createServer = () => {
@@ -19,6 +20,7 @@ export const createServer = () => {
         }))
 
         app.use('/api/auth',authRouter)
+        app.use('/api/admin',adminRouter)
 
         return app
 
