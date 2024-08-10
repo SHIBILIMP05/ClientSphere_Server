@@ -64,7 +64,9 @@ class AdminUseCase implements IAdminUsecase {
       if (addEmploye) {
         return {
           status: 200,
-          message: 'Employe successfully created'
+          message: 'Employe successfully created',
+          employeId:addEmploye.ID,
+          employePassword:addEmploye.password
         }
       } else {
         return {

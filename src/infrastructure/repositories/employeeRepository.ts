@@ -20,7 +20,7 @@ class EmployeeRepository implements IEmployeeRepository {
 
     async createEmploye(employeeData:Employee):Promise<Employee|null>{
         try {
-            console.log("dddddddd=>>",employeeData);
+           
             
             const addEmploye = await employeeModel.create({
                 name:employeeData.name,

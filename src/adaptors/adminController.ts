@@ -28,7 +28,6 @@ class AdminController {
 
     async createEmployee(req:Request,res:Response){
         try {
-            console.log(req.body);
             const {name,position,email} = req.body
             const employeeDetails = await this._adminUseCase.createEmployee(name,email,position)
             if(employeeDetails){
