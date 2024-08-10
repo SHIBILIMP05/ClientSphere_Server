@@ -9,13 +9,14 @@ import Jwt from "../providers/jwt";
 class AdminUseCase implements IAdminUsecase {
   constructor(
     private readonly _adminRepo: AdminRepository,
-    private readonly _employeeRepo:EmployeeRepository,
-    private readonly _jwt:Jwt,
-    private readonly _generateCredential:GenerateCredential
-    
-  ) {}
+    private readonly _employeeRepo: EmployeeRepository,
+    private readonly _jwt: Jwt,
+    private readonly _generateCredential: GenerateCredential,
 
-  async login(email: string, password: string):Promise <AdminOutPut> {
+
+  ) { }
+
+  async login(email: string, password: string): Promise<AdminOutPut> {
     const admin = await this._adminRepo.findByEmail(email)
     if (admin) {
       if (admin.password != password) {
@@ -24,12 +25,12 @@ class AdminUseCase implements IAdminUsecase {
           message: 'Invalid Credential'
         }
       }
-      const accessToken = this._jwt.createAccessToken(admin._id,'admin')
+      const accessToken = this._jwt.createAccessToken(admin._id, 'admin')
 
       return {
         status: 200,
         message: 'Login Successfully',
-        accessToken:accessToken
+        accessToken: accessToken
       }
     } else {
       return {
@@ -39,23 +40,40 @@ class AdminUseCase implements IAdminUsecase {
     }
   }
 
-  async createEmployee(name: string,position: string,email: string):Promise<AdminOutPut>{
+  async createEmployee(name: string, email: string, position: string): Promise<AdminOutPut> {
     const employe = await this._employeeRepo.findByEmail(email)
-    if(employe){
-      return{
-        status:409,
-        message:'Employe allready exist'
+    if (employe) {
+      return {
+        status: 409,
+        message: 'Employe allready exist'
       }
-    }else{
+    } else {
       const employeId = this._generateCredential.generateCreateId()
       const password = this._generateCredential.generatePassword()
-      console.log({name,position});
-      
-      console.log("credential ===>",{employeId,password});
-      return {
-        status:200,
-        message:'Employee successfully created'
+      const employeeData = {
+        name: name,
+        position: position,
+        email: email,
+        ID: (await employeId).toString(),
+        password: (await password).toString()
       }
+
+
+      const addEmploye = await this._employeeRepo.createEmploye(employeeData);
+
+      if (addEmploye) {
+        return {
+          status: 200,
+          message: 'Employe successfully created'
+        }
+      } else {
+        return {
+          status: 400,
+          message: 'Somthing went wrong !, try agian.'
+        }
+      }
+
+
     }
   }
 

@@ -17,6 +17,31 @@ class EmployeeRepository implements IEmployeeRepository {
             return null
         }
     }
+
+    async createEmploye(employeeData:Employee):Promise<Employee|null>{
+        try {
+            console.log("dddddddd=>>",employeeData);
+            
+            const addEmploye = await employeeModel.create({
+                name:employeeData.name,
+                position:employeeData.position,
+                ID:employeeData.ID,
+                email:employeeData.email,
+                password:employeeData.password
+
+            })
+
+            if(addEmploye){
+                return addEmploye
+            }else{
+                return null
+            }
+
+        } catch (error) {
+            console.error(error);
+            return null
+        }
+    }
 }
 
 export default EmployeeRepository;

@@ -31,10 +31,14 @@ class AdminController {
             console.log(req.body);
             const {name,position,email} = req.body
             const employeeDetails = await this._adminUseCase.createEmployee(name,email,position)
-            
+            if(employeeDetails){
+                return res.status(200).json({employeeDetails})
+            }else{
+                return res.status(400).json({employeeDetails})
+            }
         } catch (error) {
             console.error(error);
-            
+            res.status(500).json({ message: 'Something went wrong !' })
         }
     }
 }

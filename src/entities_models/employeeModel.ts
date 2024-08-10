@@ -9,7 +9,10 @@ const employeeSchema:Schema<Employee> = new Schema({
     },
     ID: {
         type: String,
-        required: true
+        
+    },
+    email:{
+        type:String
     },
     phone: {
         type: Number,
