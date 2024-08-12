@@ -6,7 +6,7 @@ import AdminUseCase from "../use_cases/adminUseCase";
 
 class AdminController {
     constructor(
-        private readonly _adminUseCase: AdminUseCase
+        private readonly _adminUseCase: AdminUseCase,
     ) {}
 
     async login(req: Request, res: Response) {
@@ -47,7 +47,7 @@ class AdminController {
             if(employeList){
                 return res.status(200).json({employeList}) 
             }else{
-                return res.status(400).json({employeList})
+                return res.status(200).json({employeList})
             }
         } catch (error) {
             console.error(error);
