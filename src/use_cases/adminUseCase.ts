@@ -50,6 +50,8 @@ class AdminUseCase implements IAdminUsecase {
     } else {
       const employeId = this._generateCredential.generateCreateId()
       const password = this._generateCredential.generatePassword()
+      console.log("password",password);
+      
       const employeeData = {
         name: name,
         position: position,
@@ -76,6 +78,22 @@ class AdminUseCase implements IAdminUsecase {
       }
 
 
+    }
+  }
+
+  async listEmploye(){
+    const employeList = await this._employeeRepo.findAll()
+    if(employeList){
+      return {
+        status:200,
+        message:"success",
+        employeList:employeList
+      }
+    }else{
+      return {
+        status: 400,
+        message: 'Data Not Found'
+      }
     }
   }
 

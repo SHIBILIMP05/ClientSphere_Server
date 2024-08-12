@@ -1,5 +1,5 @@
 import {v4 as uuidv4} from 'uuid'
-import crypto from 'crypto'
+import generator from 'generate-password';
 
 class GenerateCredential{
     async generateCreateId(){
@@ -7,9 +7,11 @@ class GenerateCredential{
     }
 
     async generatePassword(){
-        const password = Math.random().toString(36).slice(-8) + Math.random().toString(36).toUpperCase().slice(-4);
-        const hashedPassword = crypto.createHash('sha256').update(password).digest('hex')
-        return hashedPassword;
+        const password = generator.generate({
+            length:17,
+            numbers:true,
+        })
+        return password;
     }
 }
 

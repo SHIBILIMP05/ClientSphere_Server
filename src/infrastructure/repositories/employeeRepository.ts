@@ -18,6 +18,20 @@ class EmployeeRepository implements IEmployeeRepository {
         }
     }
 
+    async findAll():Promise<Employee[]|null>{
+        try {
+            const employeList = await employeeModel.find()
+            if(employeList){
+                return employeList
+            } else{
+                return null
+            }
+        } catch (error) {
+            console.error(error);
+            return null
+        }
+    }
+
     async createEmploye(employeeData:Employee):Promise<Employee|null>{
         try {
            
