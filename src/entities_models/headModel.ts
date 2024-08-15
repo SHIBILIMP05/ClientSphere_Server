@@ -11,6 +11,10 @@ const headSchema:Schema<Head> = new Schema({
         type: String,
         required: true
     },
+    position:{
+        type:String,
+        require:true
+    },
     password: {
         type: String,
         required: true

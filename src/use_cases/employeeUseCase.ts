@@ -2,18 +2,21 @@ import EmployeeRepository from "../infrastructure/repositories/employeeRepositor
 import IEmployeeUseCase from "../interfaces/IUseCases/IEmployeeUseCase";
 import { EmployeeOutPut } from "../interfaces/models/employeeOutPut.ts";
 import Jwt from "../providers/jwt";
+import ManagePassword from "../providers/managePassword";
 
 
 class EmployeeUseCase implements IEmployeeUseCase {
     constructor(
         private readonly _employeeRepo: EmployeeRepository,
         private readonly _jwt: Jwt,
+        private readonly _managePassword:ManagePassword
     ) { }
 
     async login(email: string, password: string): Promise<EmployeeOutPut> {
         const employe = await this._employeeRepo.findByEmail(email)
         if (employe) {
-            if (employe.password != password) {
+            const match = await this._managePassword.verifyPassword(password,employe.password as string)
+            if (!match) {
                 return {
                     status: 400,
                     message: 'Invalid Credential'

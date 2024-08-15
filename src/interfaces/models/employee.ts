@@ -1,11 +1,10 @@
 interface Employee {
     _id?: string
     name: string
-    ID?: string
     phone?: number
     email?: string
     position: string
-    password: string
+    password?: string
     is_teamLead?: boolean
     is_restricted?: boolean
 }

@@ -26,9 +26,9 @@ const employeeRepository = new EmployeeRepository()
 
 
 /* UseCases */
-const adminUseCase = new AdminUseCase(adminRepository,employeeRepository,jwt,generateCredential)
+const adminUseCase = new AdminUseCase(adminRepository,employeeRepository,headRepository,jwt,generateCredential,managePassword)
 const headUseCase = new HeadUseCase(headRepository,jwt,managePassword)
-const employeUsecase = new EmployeeUseCase(employeeRepository,jwt)
+const employeUsecase = new EmployeeUseCase(employeeRepository,jwt,managePassword)
 
 
 /* Controllers */

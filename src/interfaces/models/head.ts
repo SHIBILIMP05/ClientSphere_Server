@@ -1,8 +1,9 @@
 interface Head{
-    _id:string,
+    _id?:string,
     name:string,
-    email:string,
-    password:string
+    email?:string,
+    position:string,
+    password?:string
 }
 
 export default Head

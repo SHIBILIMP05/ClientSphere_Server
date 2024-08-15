@@ -39,7 +39,6 @@ class EmployeeRepository implements IEmployeeRepository {
             const addEmploye = await employeeModel.create({
                 name:employeeData.name,
                 position:employeeData.position,
-                ID:employeeData.ID,
                 email:employeeData.email,
                 password:employeeData.password
 

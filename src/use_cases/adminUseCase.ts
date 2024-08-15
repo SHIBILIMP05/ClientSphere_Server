@@ -1,17 +1,21 @@
 import AdminRepository from "../infrastructure/repositories/adminRepository";
 import EmployeeRepository from "../infrastructure/repositories/employeeRepository";
+import HeadRepository from "../infrastructure/repositories/headRepository";
 import IAdminUsecase from "../interfaces/IUseCases/IAdminUseCase";
 import { AdminOutPut } from "../interfaces/models/adminOutPut";
 import GenerateCredential from "../providers/generateCredential";
 import Jwt from "../providers/jwt";
+import ManagePassword from "../providers/managePassword";
 
 
 class AdminUseCase implements IAdminUsecase {
   constructor(
     private readonly _adminRepo: AdminRepository,
     private readonly _employeeRepo: EmployeeRepository,
+    private readonly _headRepo:HeadRepository,
     private readonly _jwt: Jwt,
     private readonly _generateCredential: GenerateCredential,
+    private readonly _managePassword:ManagePassword
 
 
   ) { }
@@ -48,36 +52,60 @@ class AdminUseCase implements IAdminUsecase {
         message: 'Employe allready exist'
       }
     } else {
-      const employeId = this._generateCredential.generateCreateId()
-      const password = this._generateCredential.generatePassword()
+      // const employeId =await this._generateCredential.generateCreateId()
+      const password =await this._generateCredential.generatePassword()
       console.log("password",password);
+      const plainePassword = password
       
-      const employeeData = {
-        name: name,
-        position: position,
-        email: email,
-        ID: (await employeId).toString(),
-        password: (await password).toString()
-      }
+      const hashedPassword = await this._managePassword.hashPassword(plainePassword)
+      console.log("hasedPassword",hashedPassword);
+      if(position === 'Employee'){
 
-
-      const addEmploye = await this._employeeRepo.createEmploye(employeeData);
-
-      if (addEmploye) {
-        return {
-          status: 200,
-          message: 'Employe successfully created',
-          employeId:addEmploye.ID,
-          employePassword:addEmploye.password
+        const employeeData = {
+          name: name,
+          position: position,
+          email: email,
+          password: hashedPassword
         }
-      } else {
-        return {
-          status: 400,
-          message: 'Somthing went wrong !, try agian.'
+  
+        const addEmploye = await this._employeeRepo.createEmploye(employeeData);
+  
+        if (addEmploye) {
+          return { 
+            status: 200,
+            message: 'Employe successfully created',
+            employeId:addEmploye.email,
+            employePassword:plainePassword
+          }
+        } else {
+          return {
+            status: 400,
+            message: 'Somthing went wrong !, try agian.'
+          }
+        }
+      }else{
+        const headData = {
+          name: name,
+          position: position,
+          email: email,
+          password: hashedPassword
+        }
+        const addHead = await this._headRepo.createHead(headData);
+  
+        if (addHead) {
+          return { 
+            status: 200,
+            message: 'Head successfully created',
+            employeId:addHead.email,
+            employePassword:plainePassword
+          }
+        } else {
+          return {
+            status: 400,
+            message: 'Somthing went wrong !, try agian.'
+          }
         }
       }
-
-
     }
   }
 

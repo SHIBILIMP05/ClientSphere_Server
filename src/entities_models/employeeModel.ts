@@ -7,10 +7,6 @@ const employeeSchema:Schema<Employee> = new Schema({
     name: {
         type: String
     },
-    ID: {
-        type: String,
-        
-    },
     email:{
         type:String
     },

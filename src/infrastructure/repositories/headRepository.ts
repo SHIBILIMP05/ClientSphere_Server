@@ -18,6 +18,30 @@ class HeadRepository implements IHeadRepository{
             return null
         }
     }
+
+    async createHead(headData:Head):Promise<Head|null>{
+        try {
+           
+            
+            const addHead = await headModel.create({
+                name:headData.name,
+                position:headData.position,
+                email:headData.email,
+                password:headData.password
+
+            })
+
+            if(addHead){
+                return addHead
+            }else{
+                return null
+            }
+
+        } catch (error) {
+            console.error(error);
+            return null
+        }
+    }
 }
 
 export default HeadRepository;

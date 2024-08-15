@@ -14,16 +14,15 @@ class HeadUseCase implements IHeadUseCase{
     async login(email: string, password: string): Promise<HeadOutPut> {
         const head = await this._headRepo.findByEmail(email)
         if(head){
-            const match = await this._managePassword.verifyPassword(password,head.password)
+            const match = await this._managePassword.verifyPassword(password,head.password as string)
             console.log('match === ',match);
-            
             if(!match){
                 return{
                     status:400,
                     message:"Invalid Credential"
                 }
             }
-            const accessToken = this._jwt.createAccessToken(head._id,'head')
+            const accessToken = this._jwt.createAccessToken(head._id as string,'head')
             return {
                 status:200,
                 message:"Login Successfully",
@@ -39,3 +38,4 @@ class HeadUseCase implements IHeadUseCase{
 }
 
 export default HeadUseCase
+
