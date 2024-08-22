@@ -2,6 +2,7 @@ import AdminRepository from "../infrastructure/repositories/adminRepository";
 import EmployeeRepository from "../infrastructure/repositories/employeeRepository";
 import HeadRepository from "../infrastructure/repositories/headRepository";
 import IAdminUsecase from "../interfaces/IUseCases/IAdminUseCase";
+import Admin from "../interfaces/models/admin";
 import { AdminOutPut } from "../interfaces/models/adminOutPut";
 import GenerateCredential from "../providers/generateCredential";
 import Jwt from "../providers/jwt";
@@ -34,7 +35,8 @@ class AdminUseCase implements IAdminUsecase {
       return {
         status: 200,
         message: 'Login Successfully',
-        accessToken: accessToken
+        accessToken: accessToken,
+        data:admin
       }
     } else {
       return {
@@ -123,6 +125,23 @@ class AdminUseCase implements IAdminUsecase {
         message: 'Data Not Found'
       }
     }
+  }
+
+  async editProfile(editDatas:Admin){
+    const editProfileResponse = await this._adminRepo.updateData(editDatas)
+    if(editProfileResponse){
+      return{
+        status:200,
+        message:"success",
+        data:editProfileResponse
+      }
+    }else{
+      return {
+        status: 400,
+        message: 'Data Not Found'
+      }
+    }
+    
   }
 
 }

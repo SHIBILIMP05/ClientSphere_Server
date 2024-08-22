@@ -28,7 +28,6 @@ class HeadRepository implements IHeadRepository{
                 position:headData.position,
                 email:headData.email,
                 password:headData.password
-
             })
 
             if(addHead){

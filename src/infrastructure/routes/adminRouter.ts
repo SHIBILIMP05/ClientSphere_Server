@@ -7,9 +7,11 @@ const router =express.Router()
 
 const handleEmployeeCreation = (req:Request,res:Response)=>adminController.createEmployee(req,res)
 const handleListEmployee = (req:Request,res:Response)=>adminController.listEmploye(req,res)
+const handleEditProfile = (req:Request,res:Response)=>adminController.editProfile(req,res)
 
 /* Rout for employe creation */
 router.post('/createEmployee',handleEmployeeCreation)
 router.get('/listEmployee',handleListEmployee)
+router.post('/editProfile',handleEditProfile)
 
 export default router

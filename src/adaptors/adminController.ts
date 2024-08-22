@@ -1,18 +1,20 @@
 // import { Response, Request } from "express-serve-static-core";
 import { Request, Response } from "express";
 import AdminUseCase from "../use_cases/adminUseCase";
+import fileUpload from "express-fileupload";
+import cloudinary from "../providers/cloudinary";
 
 
 
 class AdminController {
     constructor(
         private readonly _adminUseCase: AdminUseCase,
-    ) {}
+    ) { }
 
     async login(req: Request, res: Response) {
         try {
             const { email, password } = req.body
-            
+
             const admin = await this._adminUseCase.login(email, password)
             if (admin) {
                 return res.status(200).json({ admin })
@@ -26,14 +28,14 @@ class AdminController {
         }
     }
 
-    async createEmployee(req:Request,res:Response){
+    async createEmployee(req: Request, res: Response) {
         try {
-            const {name,position,email} = req.body
-            const employeeDetails = await this._adminUseCase.createEmployee(name,email,position)
-            if(employeeDetails){
-                return res.status(200).json({employeeDetails})
-            }else{
-                return res.status(400).json({employeeDetails})
+            const { name, position, email } = req.body
+            const employeeDetails = await this._adminUseCase.createEmployee(name, email, position)
+            if (employeeDetails) {
+                return res.status(200).json({ employeeDetails })
+            } else {
+                return res.status(400).json({ employeeDetails })
             }
         } catch (error) {
             console.error(error);
@@ -41,17 +43,55 @@ class AdminController {
         }
     }
 
-    async listEmploye(req:Request,res:Response){
+    async listEmploye(req: Request, res: Response) {
         try {
             const employeList = await this._adminUseCase.listEmploye()
-            if(employeList){
-                return res.status(200).json({employeList}) 
-            }else{
-                return res.status(200).json({employeList})
+            if (employeList) {
+                return res.status(200).json({ employeList })
+            } else {
+                return res.status(200).json({ employeList })
             }
         } catch (error) {
             console.error(error);
+
+        }
+    }
+
+    async editProfile(req: Request, res: Response) {
+        try {
+            const { _id, name, email, address, city, country, pinCode, phone} = req.body
+
+            if (!req.files || !req.files.image) {
+                return res.status(400).json({ message: 'No image file uploaded' });
+            }
+
+            const image = req.files.image as fileUpload.UploadedFile;
             
+            const result = await cloudinary.uploader.upload(image.tempFilePath, {
+                folder: 'profile_images',
+            });
+
+            const editDatas = {
+                _id:_id,
+                name:name,
+                email:email,
+                address:address,
+                city:city,
+                country:country,
+                pinCode:pinCode,
+                phone:phone,
+                image:result.secure_url
+            }
+            console.log("editDatas",editDatas);
+            const editProfileResponse = await this._adminUseCase.editProfile(editDatas)
+            if (editProfileResponse) {
+                return res.status(200).json({ editProfileResponse })
+            } else {
+                return res.status(200).json({ editProfileResponse })
+            }
+        } catch (error) {
+            console.error(error);
+
         }
     }
 }

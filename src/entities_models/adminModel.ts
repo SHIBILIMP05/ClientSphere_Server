@@ -13,9 +13,27 @@ const adminSchema: Schema<admin> = new Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    image: {
+        type: String
+    },
+    address:{
+        type:String
+    },
+    city:{
+        type:String
+    },
+    country:{
+        type:String
+    },
+    pinCode:{
+        type:String
+    },
+    phone:{
+        type:String
+    },
 })
 
-const adminModel = model <admin>('admin',adminSchema)
+const adminModel = model<admin>('admin', adminSchema)
 
 export default adminModel;
