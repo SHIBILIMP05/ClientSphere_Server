@@ -1,5 +1,6 @@
 import EmployeeRepository from "../infrastructure/repositories/employeeRepository";
 import IEmployeeUseCase from "../interfaces/IUseCases/IEmployeeUseCase";
+import Employee from "../interfaces/models/employee";
 import { EmployeeOutPut } from "../interfaces/models/employeeOutPut.ts";
 import Jwt from "../providers/jwt";
 import ManagePassword from "../providers/managePassword";
@@ -26,7 +27,8 @@ class EmployeeUseCase implements IEmployeeUseCase {
             return {
                 status: 200,
                 message: 'Login Successfully',
-                accessToken: accessToken
+                accessToken: accessToken,
+                data:employe
             }
         } else {
             return {
@@ -35,6 +37,24 @@ class EmployeeUseCase implements IEmployeeUseCase {
             }
         }
     }
+
+
+    async editProfile(editDatas:Employee){
+        const editProfileResponse = await this._employeeRepo.updateData(editDatas)
+        if(editProfileResponse){
+          return{
+            status:200,
+            message:"success",
+            data:editProfileResponse
+          }
+        }else{
+          return {
+            status: 400,
+            message: 'Data Not Found'
+          }
+        }
+        
+      }
 }
 
 export default EmployeeUseCase

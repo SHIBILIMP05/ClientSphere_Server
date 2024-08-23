@@ -55,6 +55,37 @@ class EmployeeRepository implements IEmployeeRepository {
             return null
         }
     }
+
+    async updateData(editDatas: Employee):Promise<Employee | null> {
+        try {
+            const updateEmploye = await employeeModel.findByIdAndUpdate(
+                editDatas._id,
+                {
+                    name: editDatas.name,
+                    email: editDatas.email,
+                    address: editDatas.address,
+                    city: editDatas.city,
+                    country: editDatas.country,
+                    pinCode: editDatas.pinCode,
+                    phone: editDatas.phone,
+                    image: editDatas.image,
+                },
+                { new: true }
+            )
+            console.log("updated admin-----",updateEmploye);
+            
+            if (updateEmploye) {
+                return updateEmploye
+            } else {
+                return null
+            }
+        } catch (error) {
+            console.error('Error updating admin data:', error);
+            return null
+        }
+
+
+    }
 }
 
 export default EmployeeRepository;

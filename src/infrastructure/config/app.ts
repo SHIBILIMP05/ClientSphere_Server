@@ -7,6 +7,7 @@ import authRouter from '../routes/authRouter'
 import dotenv from "dotenv"
 import adminRouter from '../routes/adminRouter'
 import headRoouter from '../routes/headRouter';
+import employee from '../routes/employeeRouter';
 
 dotenv.config()
 export const createServer = () => {
@@ -28,6 +29,7 @@ export const createServer = () => {
         app.use('/api/auth', authRouter)
         app.use('/api/admin', adminRouter)
         app.use('/api/head', headRoouter)
+        app.use('/api/employee',employee)
 
 
         return app

@@ -22,9 +22,20 @@ const employeeSchema:Schema<Employee> = new Schema({
         type: String,
         required: true
     },
-    is_teamLead: {
-        type: Boolean,
-        default:false
+    image: {
+        type: String
+    },
+    address:{
+        type:String
+    },
+    city:{
+        type:String
+    },
+    country:{
+        type:String
+    },
+    pinCode:{
+        type:String
     },
     is_restricted: {
         type: Boolean,
