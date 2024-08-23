@@ -6,6 +6,7 @@ import fileUpload from 'express-fileupload';
 import authRouter from '../routes/authRouter'
 import dotenv from "dotenv"
 import adminRouter from '../routes/adminRouter'
+import headRoouter from '../routes/headRouter';
 
 dotenv.config()
 export const createServer = () => {
@@ -26,6 +27,8 @@ export const createServer = () => {
 
         app.use('/api/auth', authRouter)
         app.use('/api/admin', adminRouter)
+        app.use('/api/head', headRoouter)
+
 
         return app
 

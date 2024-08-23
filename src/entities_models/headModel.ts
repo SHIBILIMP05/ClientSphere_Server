@@ -18,7 +18,25 @@ const headSchema:Schema<Head> = new Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    image: {
+        type: String
+    },
+    address:{
+        type:String
+    },
+    city:{
+        type:String
+    },
+    country:{
+        type:String
+    },
+    pinCode:{
+        type:String
+    },
+    phone:{
+        type:String
+    },
 })
 
 const headModel = model <Head>('head',headSchema)

@@ -59,30 +59,30 @@ class AdminController {
 
     async editProfile(req: Request, res: Response) {
         try {
-            const { _id, name, email, address, city, country, pinCode, phone} = req.body
+            const { _id, name, email, address, city, country, pinCode, phone } = req.body
 
             if (!req.files || !req.files.image) {
                 return res.status(400).json({ message: 'No image file uploaded' });
             }
 
             const image = req.files.image as fileUpload.UploadedFile;
-            
+
             const result = await cloudinary.uploader.upload(image.tempFilePath, {
                 folder: 'profile_images',
             });
 
             const editDatas = {
-                _id:_id,
-                name:name,
-                email:email,
-                address:address,
-                city:city,
-                country:country,
-                pinCode:pinCode,
-                phone:phone,
-                image:result.secure_url
+                _id: _id,
+                name: name,
+                email: email,
+                address: address,
+                city: city,
+                country: country,
+                pinCode: pinCode,
+                phone: phone,
+                image: result.secure_url
             }
-            console.log("editDatas",editDatas);
+            console.log("editDatas", editDatas);
             const editProfileResponse = await this._adminUseCase.editProfile(editDatas)
             if (editProfileResponse) {
                 return res.status(200).json({ editProfileResponse })
