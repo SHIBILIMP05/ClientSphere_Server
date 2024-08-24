@@ -44,6 +44,8 @@ class HeadRepository implements IHeadRepository {
 
     async updateData(editDatas: Head): Promise<Head | null> {
         try {
+            console.log("editDatas::::::",editDatas);
+            
             const updateAdmin = await headModel.findByIdAndUpdate(
                 editDatas._id,
                 {

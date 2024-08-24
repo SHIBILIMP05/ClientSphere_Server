@@ -28,7 +28,9 @@ class HeadController {
     async editProfile(req: Request, res: Response) {
         try {
             const { _id, name, email, address, city, country, pinCode, phone } = req.body
-
+            
+            
+            
             if (!req.files || !req.files.image) {
                 return res.status(400).json({ message: 'No image file uploaded' });
             }
