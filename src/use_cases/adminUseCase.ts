@@ -13,10 +13,10 @@ class AdminUseCase implements IAdminUsecase {
   constructor(
     private readonly _adminRepo: AdminRepository,
     private readonly _employeeRepo: EmployeeRepository,
-    private readonly _headRepo:HeadRepository,
+    private readonly _headRepo: HeadRepository,
     private readonly _jwt: Jwt,
     private readonly _generateCredential: GenerateCredential,
-    private readonly _managePassword:ManagePassword
+    private readonly _managePassword: ManagePassword
 
 
   ) { }
@@ -36,7 +36,7 @@ class AdminUseCase implements IAdminUsecase {
         status: 200,
         message: 'Login Successfully',
         accessToken: accessToken,
-        data:admin
+        data: admin
       }
     } else {
       return {
@@ -55,13 +55,13 @@ class AdminUseCase implements IAdminUsecase {
       }
     } else {
       // const employeId =await this._generateCredential.generateCreateId()
-      const password =await this._generateCredential.generatePassword()
-      console.log("password",password);
+      const password = await this._generateCredential.generatePassword()
+      console.log("password", password);
       const plainePassword = password
-      
+
       const hashedPassword = await this._managePassword.hashPassword(plainePassword)
-      console.log("hasedPassword",hashedPassword);
-      if(position === 'Employee'){
+      console.log("hasedPassword", hashedPassword);
+      if (position === 'Employee') {
 
         const employeeData = {
           name: name,
@@ -69,15 +69,15 @@ class AdminUseCase implements IAdminUsecase {
           email: email,
           password: hashedPassword
         }
-  
+
         const addEmploye = await this._employeeRepo.createEmploye(employeeData);
-  
+
         if (addEmploye) {
-          return { 
+          return {
             status: 200,
             message: 'Employe successfully created',
-            employeId:addEmploye.email,
-            employePassword:plainePassword
+            employeId: addEmploye.email,
+            employePassword: plainePassword
           }
         } else {
           return {
@@ -85,7 +85,7 @@ class AdminUseCase implements IAdminUsecase {
             message: 'Somthing went wrong !, try agian.'
           }
         }
-      }else{
+      } else {
         const headData = {
           name: name,
           position: position,
@@ -93,13 +93,13 @@ class AdminUseCase implements IAdminUsecase {
           password: hashedPassword
         }
         const addHead = await this._headRepo.createHead(headData);
-  
+
         if (addHead) {
-          return { 
+          return {
             status: 200,
             message: 'Head successfully created',
-            employeId:addHead.email,
-            employePassword:plainePassword
+            employeId: addHead.email,
+            employePassword: plainePassword
           }
         } else {
           return {
@@ -111,15 +111,15 @@ class AdminUseCase implements IAdminUsecase {
     }
   }
 
-  async listEmploye(){
+  async listEmploye() {
     const employeList = await this._employeeRepo.findAll()
-    if(employeList){
+    if (employeList) {
       return {
-        status:200,
-        message:"success",
-        employeList:employeList
+        status: 200,
+        message: "success",
+        employeList: employeList
       }
-    }else{
+    } else {
       return {
         status: 400,
         message: 'Data Not Found'
@@ -127,21 +127,58 @@ class AdminUseCase implements IAdminUsecase {
     }
   }
 
-  async editProfile(editDatas:Admin){
+  async editProfile(editDatas: Admin) {
     const editProfileResponse = await this._adminRepo.updateData(editDatas)
-    if(editProfileResponse){
-      return{
-        status:200,
-        message:"success",
-        data:editProfileResponse
+    if (editProfileResponse) {
+      return {
+        status: 200,
+        message: "success",
+        data: editProfileResponse
       }
-    }else{
+    } else {
       return {
         status: 400,
         message: 'Data Not Found'
       }
     }
-    
+
+  }
+
+  async blockEmployee(id: string):Promise<AdminOutPut> {
+    const employe = await this._employeeRepo.findById(id)
+    if (employe?.is_restricted) {
+      const restriction = await this._employeeRepo.restrictAction(id, false)
+      if (restriction) {
+        console.log("unblock user");
+        
+        return {
+          status: 200,
+          message: "Action successfully allowed",
+          is_restricted: restriction.is_restricted
+        }
+      } else {
+        return {
+          status: 400,
+          message: 'Data Not Found'
+        }
+      }
+    } else {
+      const restriction = await this._employeeRepo.restrictAction(id, true)
+      console.log("block user");
+      
+      if (restriction) {
+        return {
+          status: 200,
+          message: "Action successfully Restricted",
+          is_restricted: restriction.is_restricted
+        }
+      } else {
+        return {
+          status: 400,
+          message: 'Data Not Found'
+        }
+      }
+    }
   }
 
 }

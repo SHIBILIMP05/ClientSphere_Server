@@ -4,12 +4,12 @@ import Employee from "../../interfaces/models/employee";
 
 
 class EmployeeRepository implements IEmployeeRepository {
-    async findByEmail(email:string):Promise<Employee|null>{
+    async findByEmail(email: string): Promise<Employee | null> {
         try {
-            const employe = await employeeModel.findOne({email:email})
-            if(employe){
+            const employe = await employeeModel.findOne({ email: email })
+            if (employe) {
                 return employe
-            }else{
+            } else {
                 return null
             }
         } catch (error) {
@@ -18,12 +18,26 @@ class EmployeeRepository implements IEmployeeRepository {
         }
     }
 
-    async findAll():Promise<Employee[]|null>{
+    async findById(id: string): Promise<Employee | null> {
+        try {
+            const employe = await employeeModel.findOne({ _id: id })
+            if (employe) {
+                return employe
+            } else {
+                return null
+            }
+        } catch (error) {
+            console.error(error);
+            return null
+        }
+    }
+
+    async findAll(): Promise<Employee[] | null> {
         try {
             const employeList = await employeeModel.find()
-            if(employeList){
+            if (employeList) {
                 return employeList
-            } else{
+            } else {
                 return null
             }
         } catch (error) {
@@ -32,21 +46,21 @@ class EmployeeRepository implements IEmployeeRepository {
         }
     }
 
-    async createEmploye(employeeData:Employee):Promise<Employee|null>{
+    async createEmploye(employeeData: Employee): Promise<Employee | null> {
         try {
-           
-            
+
+
             const addEmploye = await employeeModel.create({
-                name:employeeData.name,
-                position:employeeData.position,
-                email:employeeData.email,
-                password:employeeData.password
+                name: employeeData.name,
+                position: employeeData.position,
+                email: employeeData.email,
+                password: employeeData.password
 
             })
 
-            if(addEmploye){
+            if (addEmploye) {
                 return addEmploye
-            }else{
+            } else {
                 return null
             }
 
@@ -56,7 +70,7 @@ class EmployeeRepository implements IEmployeeRepository {
         }
     }
 
-    async updateData(editDatas: Employee):Promise<Employee | null> {
+    async updateData(editDatas: Employee): Promise<Employee | null> {
         try {
             const updateEmploye = await employeeModel.findByIdAndUpdate(
                 editDatas._id,
@@ -72,8 +86,8 @@ class EmployeeRepository implements IEmployeeRepository {
                 },
                 { new: true }
             )
-            console.log("updated admin-----",updateEmploye);
-            
+            console.log("updated admin-----", updateEmploye);
+
             if (updateEmploye) {
                 return updateEmploye
             } else {
@@ -85,6 +99,28 @@ class EmployeeRepository implements IEmployeeRepository {
         }
 
 
+    }
+
+    async restrictAction(id: string, value: boolean): Promise<Employee | null> {
+        try {
+            console.log("valueeeeee:::", value);
+
+            const restriction = await employeeModel.findByIdAndUpdate(
+                id,
+                {
+                    is_restricted: value
+                },
+                { new: true }
+            )
+            if (restriction) {
+                return restriction
+            } else {
+                return null
+            }
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
     }
 }
 

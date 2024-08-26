@@ -14,6 +14,7 @@ const handleHeadLogin = (req:Request,res:Response)=>headController.login(req,res
 
 /* Employe Auth Rout Handlers */
 const handleEmployeLogin = (req:Request,res:Response)=>employeController.login(req,res)
+const handleEmployeBlock = (req:Request,res:Response)=>adminController.blockEmployee(req,res)
 
 /* Admin auth routes */
 router.post('/admin/login',handleAdminLogin)
@@ -23,5 +24,6 @@ router.post('/head/login',handleHeadLogin)
 
 /* Employee auth routes */
 router.post('/employe/login',handleEmployeLogin)
+router.get('/employe/:empId/block',handleEmployeBlock)
 
 export default router

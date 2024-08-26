@@ -27,6 +27,21 @@ class AdminController {
             res.status(500).json({ message: 'Something went wrong' })
         }
     }
+    async blockEmployee(req:Request,res:Response){
+        try {
+            const id = req.params.empId
+            console.log("IDDDDD",id);
+            const restriction = await this._adminUseCase.blockEmployee(id)
+            if (restriction) {
+                return res.status(200).json({ restriction })
+            } else {
+                return res.status(400).json({ restriction })
+            }
+        } catch (error) {
+            console.error(error);
+            
+        }
+    }
 
     async createEmployee(req: Request, res: Response) {
         try {

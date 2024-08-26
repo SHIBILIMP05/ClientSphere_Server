@@ -7,4 +7,5 @@ accessToken?:string,
 employeId?:string,
 employePassword?:string,
 data?:Admin,
+is_restricted?:boolean
 }

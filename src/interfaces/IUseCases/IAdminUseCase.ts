@@ -6,6 +6,7 @@ interface IAdminUsecase {
     createEmployee(name:string,position:string,email:string):Promise<AdminOutPut>,
     listEmploye():Promise<AdminOutPut>,
     editProfile(editDatas:Admin):Promise<AdminOutPut>
+    blockEmployee(id:string):Promise<AdminOutPut>
 
 }
 
