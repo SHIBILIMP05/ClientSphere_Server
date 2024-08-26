@@ -44,7 +44,7 @@ class EmployeeUseCase implements IEmployeeUseCase {
         if(editProfileResponse){
           return{
             status:200,
-            message:"success",
+            message:"Profile succesfully updated",
             data:editProfileResponse
           }
         }else{

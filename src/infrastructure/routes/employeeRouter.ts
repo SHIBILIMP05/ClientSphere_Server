@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express"
 import { employeController } from "../../providers/controllers"
+import { blockCheck } from "../../middlewares/employeeAuth"
 
 const router =express.Router()
 
@@ -9,6 +10,6 @@ const handleEditProfile = (req:Request,res:Response)=>employeController.editProf
 
 /* Rout for employe creation */
 
-router.post('/editProfile',handleEditProfile)
+router.post('/:empId/editProfile',blockCheck,handleEditProfile)
 
 export default router
