@@ -11,11 +11,13 @@ import HeadUseCase from "../use_cases/headUseCase";
 import GenerateCredential from "./generateCredential";
 import Jwt from "./jwt";
 import ManagePassword from "./managePassword";
+import SendMail from "./nodeMailer";
 
 /* Provider */
 const jwt = new Jwt()
 const managePassword = new ManagePassword()
 const generateCredential = new GenerateCredential()
+const sendMail = new SendMail()
 
 
 /* Repositories */
@@ -26,7 +28,7 @@ const employeeRepository = new EmployeeRepository()
 
 
 /* UseCases */
-const adminUseCase = new AdminUseCase(adminRepository,employeeRepository,headRepository,jwt,generateCredential,managePassword)
+const adminUseCase = new AdminUseCase(adminRepository,employeeRepository,headRepository,jwt,generateCredential,managePassword,sendMail)
 const headUseCase = new HeadUseCase(headRepository,jwt,managePassword)
 const employeUsecase = new EmployeeUseCase(employeeRepository,jwt,managePassword)
 

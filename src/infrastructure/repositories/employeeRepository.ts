@@ -104,7 +104,11 @@ class EmployeeRepository implements IEmployeeRepository {
     async restrictAction(id: string, value: boolean): Promise<Employee | null> {
         try {
             console.log("valueeeeee:::", value);
-
+            const status = await employeeModel.findOne({_id:id})
+            if(status?.is_restricted){
+                console.log("employee restricted");
+                
+            }
             const restriction = await employeeModel.findByIdAndUpdate(
                 id,
                 {

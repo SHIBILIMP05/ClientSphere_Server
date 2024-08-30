@@ -4,25 +4,34 @@ import fileUpload from "express-fileupload";
 import cloudinary from "../providers/cloudinary";
 
 
-class EmployeController{
+class EmployeController {
     constructor(
-        private readonly _employeeUseCase:EmployeeUseCase
-    ){}
-    
-    async login(req:Request,res:Response){
+        private readonly _employeeUseCase: EmployeeUseCase
+    ) { }
+
+    async login(req: Request, res: Response) {
         try {
-            const {email,password} = req.body
-            const employe = await this._employeeUseCase.login(email,password)
-            if(employe){
-                return res.status(200).json({employe})
-            }else{
-                return res.status(400).json({employe})
+            const { email, password } = req.body
+            const employe = await this._employeeUseCase.login(email, password)
+            console.log("control data ===", employe);
+
+            switch (employe.status) {
+                
+                case 200:
+                    return res.status(200).json({ employe })
+                case 400:
+                    return res.status(400).json({ employe })
+                case 401:
+                    return res.status(401).json({ employe })
+                default:
+                    return 
+
             }
 
         } catch (error) {
             console.error(error);
-            res.status(500).json({message:'Something went wrong'})
-            
+            res.status(500).json({ message: 'Something went wrong' })
+
         }
     }
 

@@ -7,6 +7,7 @@ import { AdminOutPut } from "../interfaces/models/adminOutPut";
 import GenerateCredential from "../providers/generateCredential";
 import Jwt from "../providers/jwt";
 import ManagePassword from "../providers/managePassword";
+import SendMail from "../providers/nodeMailer";
 
 
 class AdminUseCase implements IAdminUsecase {
@@ -16,7 +17,8 @@ class AdminUseCase implements IAdminUsecase {
     private readonly _headRepo: HeadRepository,
     private readonly _jwt: Jwt,
     private readonly _generateCredential: GenerateCredential,
-    private readonly _managePassword: ManagePassword
+    private readonly _managePassword: ManagePassword,
+    private readonly _sendEmail:SendMail
 
 
   ) { }
@@ -72,7 +74,10 @@ class AdminUseCase implements IAdminUsecase {
 
         const addEmploye = await this._employeeRepo.createEmploye(employeeData);
 
-        if (addEmploye) {
+        if (addEmploye&&addEmploye.email) {
+
+          await this._sendEmail.sendCredentialMail(addEmploye.email,plainePassword,addEmploye.name)
+
           return {
             status: 200,
             message: 'Employe successfully created',

@@ -6,22 +6,13 @@ const employeeRepo = new EmployeeRepository()
 export const blockCheck = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const id = req.params.empId
-        console.log("id''''''''''';;;;;", id);
-
         const employe = await employeeRepo.findById(id)
-        console.log(employe);
         if (employe?.is_restricted) {
-            res.json({ message: 'Your actions Restricted by admin.' }).status(401)
-            // return{
-            //     status:401,
-            //     message:"action restricted",
-            //   }
+            res.status(401).json({employe:{ message: 'Your actions Restricted by admin.' }})
         } else {
-
             next()
         }
     } catch (error) {
         console.error(error);
-
     }
 }
