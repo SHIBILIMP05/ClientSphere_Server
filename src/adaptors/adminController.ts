@@ -27,10 +27,10 @@ class AdminController {
             res.status(500).json({ message: 'Something went wrong' })
         }
     }
-    async blockEmployee(req:Request,res:Response){
+    async blockEmployee(req: Request, res: Response) {
         try {
             const id = req.params.empId
-            console.log("IDDDDD",id);
+            console.log("IDDDDD", id);
             const restriction = await this._adminUseCase.blockEmployee(id)
             if (restriction) {
                 return res.status(200).json({ restriction })
@@ -39,7 +39,7 @@ class AdminController {
             }
         } catch (error) {
             console.error(error);
-            
+
         }
     }
 
@@ -60,7 +60,10 @@ class AdminController {
 
     async listEmploye(req: Request, res: Response) {
         try {
-            const employeList = await this._adminUseCase.listEmploye()
+            const page: number = parseInt(req.params.pageNo)
+            console.log("controlePage==", page);
+
+            const employeList = await this._adminUseCase.listEmploye(page)
             if (employeList) {
                 return res.status(200).json({ employeList })
             } else {

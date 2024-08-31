@@ -19,8 +19,8 @@ class EmployeeUseCase implements IEmployeeUseCase {
     if (employe) {
       if (employe.is_restricted) {
         return {
-          status:401,
-          message:'Your action restricted by admin'
+          status: 401,
+          message: 'Your action restricted by admin'
         }
       } else {
         const match = await this._managePassword.verifyPassword(password, employe.password as string)

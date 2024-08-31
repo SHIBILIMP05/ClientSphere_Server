@@ -11,7 +11,7 @@ const handleEditProfile = (req:Request,res:Response)=>adminController.editProfil
 
 /* Rout for employe creation */
 router.post('/createEmployee',handleEmployeeCreation)
-router.get('/listEmployee',handleListEmployee)
+router.get('/listEmployee/:pageNo',handleListEmployee)
 router.post('/editProfile',handleEditProfile)
 
 export default router

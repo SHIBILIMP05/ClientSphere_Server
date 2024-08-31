@@ -18,7 +18,7 @@ class AdminUseCase implements IAdminUsecase {
     private readonly _jwt: Jwt,
     private readonly _generateCredential: GenerateCredential,
     private readonly _managePassword: ManagePassword,
-    private readonly _sendEmail:SendMail
+    private readonly _sendEmail: SendMail
 
 
   ) { }
@@ -74,9 +74,9 @@ class AdminUseCase implements IAdminUsecase {
 
         const addEmploye = await this._employeeRepo.createEmploye(employeeData);
 
-        if (addEmploye&&addEmploye.email) {
+        if (addEmploye && addEmploye.email) {
 
-          await this._sendEmail.sendCredentialMail(addEmploye.email,plainePassword,addEmploye.name)
+          await this._sendEmail.sendCredentialMail(addEmploye.email, plainePassword, addEmploye.name)
 
           return {
             status: 200,
@@ -116,13 +116,18 @@ class AdminUseCase implements IAdminUsecase {
     }
   }
 
-  async listEmploye() {
-    const employeList = await this._employeeRepo.findAll()
+  async listEmploye(page: number): Promise<AdminOutPut> {
+    console.log("usecasePage==", page);
+
+    const employeList = await this._employeeRepo.listEmploye(page)
+    console.log("count---",employeList?.count);
+    
     if (employeList) {
       return {
         status: 200,
         message: "success",
-        employeList: employeList
+        employeList: employeList.employeList,
+        count:employeList.count
       }
     } else {
       return {
@@ -149,13 +154,13 @@ class AdminUseCase implements IAdminUsecase {
 
   }
 
-  async blockEmployee(id: string):Promise<AdminOutPut> {
+  async blockEmployee(id: string): Promise<AdminOutPut> {
     const employe = await this._employeeRepo.findById(id)
     if (employe?.is_restricted) {
       const restriction = await this._employeeRepo.restrictAction(id, false)
       if (restriction) {
         console.log("unblock user");
-        
+
         return {
           status: 200,
           message: "Action successfully allowed",
@@ -170,7 +175,7 @@ class AdminUseCase implements IAdminUsecase {
     } else {
       const restriction = await this._employeeRepo.restrictAction(id, true)
       console.log("block user");
-      
+
       if (restriction) {
         return {
           status: 200,

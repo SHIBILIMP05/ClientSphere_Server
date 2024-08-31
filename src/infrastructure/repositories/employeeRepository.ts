@@ -1,5 +1,6 @@
 import employeeModel from "../../entities_models/employeeModel";
 import IEmployeeRepository from "../../interfaces/IRepositories/IEmployeeRepository";
+import { AdminOutPut } from "../../interfaces/models/adminOutPut";
 import Employee from "../../interfaces/models/employee";
 
 
@@ -32,11 +33,20 @@ class EmployeeRepository implements IEmployeeRepository {
         }
     }
 
-    async findAll(): Promise<Employee[] | null> {
+    async listEmploye(page: number): Promise<AdminOutPut | null> {
         try {
-            const employeList = await employeeModel.find()
+            console.log("repoPage==", page);
+            const skipCount:number = page*8
+            const totalCount:number = await employeeModel.find().countDocuments()
+            console.log("count===>",totalCount);
+            
+            const employeList = await employeeModel.find().skip(skipCount).limit(8)
+            
             if (employeList) {
-                return employeList
+                return {
+                    employeList:employeList,
+                    count:Math.ceil(totalCount/8)
+                }
             } else {
                 return null
             }
@@ -104,10 +114,10 @@ class EmployeeRepository implements IEmployeeRepository {
     async restrictAction(id: string, value: boolean): Promise<Employee | null> {
         try {
             console.log("valueeeeee:::", value);
-            const status = await employeeModel.findOne({_id:id})
-            if(status?.is_restricted){
+            const status = await employeeModel.findOne({ _id: id })
+            if (status?.is_restricted) {
                 console.log("employee restricted");
-                
+
             }
             const restriction = await employeeModel.findByIdAndUpdate(
                 id,
