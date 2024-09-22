@@ -28,9 +28,9 @@ class HeadController {
     async editProfile(req: Request, res: Response) {
         try {
             const { _id, name, email, address, city, country, pinCode, phone } = req.body
-            
-            
-            
+
+
+
             if (!req.files || !req.files.image) {
                 return res.status(400).json({ message: 'No image file uploaded' });
             }
@@ -58,6 +58,49 @@ class HeadController {
                 return res.status(200).json({ editProfileResponse })
             } else {
                 return res.status(200).json({ editProfileResponse })
+            }
+        } catch (error) {
+            console.error(error);
+
+        }
+    }
+
+    async listNewLeads(req: Request, res: Response) {
+        try {
+            const response = await this._headUseCase.listNewLeads()
+            if (response) {
+                return res.status(200).json({ response })
+
+            } else {
+                return res.status(400).json({ response })
+            }
+        } catch (error) {
+
+        }
+    }
+
+    async listEmployee(req: Request, res: Response) {
+        try {
+            const response = await this._headUseCase.listEmployee()
+            if (response) {
+                return res.status(200).json({ response })
+            } else {
+                return res.status(400).json({ response })
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async assignLeads(req: Request, res: Response) {
+        try {
+            const selectedRows = req.body.selectedRows            
+            const empId = req.params.empId            
+            const response = await this._headUseCase.assignLeads(empId,selectedRows)
+            if (response) {
+                return res.status(200).json({ response })
+            } else {
+                return res.status(400).json({ response })
             }
         } catch (error) {
             console.error(error);

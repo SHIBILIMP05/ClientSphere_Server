@@ -45,8 +45,6 @@ class AdminRepository implements IAdminRepository {
             console.error('Error updating admin data:', error);
             return null
         }
-
-
     }
 }
 

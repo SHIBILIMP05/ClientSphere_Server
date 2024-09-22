@@ -112,6 +112,29 @@ class AdminController {
 
         }
     }
+
+    async submitLeadsForm(req: Request, res: Response) {
+        try {
+            const leadData = {
+                name: req.body.name,
+                email: req.body.email,
+                phone: req.body.phone,
+                company: req.body.company,
+                leadSource: req.body.leadSource,
+                message: req.body.message,
+            }
+            const response = await this._adminUseCase.submitLeadsForm(leadData)
+            if(response){
+                return res.status(200).json({ response })
+            }else{
+                return res.status(400).json({response})
+            }
+
+        } catch (error) {
+            console.error(error);
+
+        }
+    }
 }
 
 

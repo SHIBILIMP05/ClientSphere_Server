@@ -1,9 +1,11 @@
 import AdminRepository from "../infrastructure/repositories/adminRepository";
 import EmployeeRepository from "../infrastructure/repositories/employeeRepository";
 import HeadRepository from "../infrastructure/repositories/headRepository";
+import LeadsRepository from "../infrastructure/repositories/leadsRepository";
 import IAdminUsecase from "../interfaces/IUseCases/IAdminUseCase";
 import Admin from "../interfaces/models/admin";
 import { AdminOutPut } from "../interfaces/models/adminOutPut";
+import { LeadData } from "../interfaces/models/leads";
 import GenerateCredential from "../providers/generateCredential";
 import Jwt from "../providers/jwt";
 import ManagePassword from "../providers/managePassword";
@@ -15,12 +17,11 @@ class AdminUseCase implements IAdminUsecase {
     private readonly _adminRepo: AdminRepository,
     private readonly _employeeRepo: EmployeeRepository,
     private readonly _headRepo: HeadRepository,
+    private readonly _leadRepo: LeadsRepository,
     private readonly _jwt: Jwt,
     private readonly _generateCredential: GenerateCredential,
     private readonly _managePassword: ManagePassword,
     private readonly _sendEmail: SendMail
-
-
   ) { }
 
   async login(email: string, password: string): Promise<AdminOutPut> {
@@ -120,14 +121,16 @@ class AdminUseCase implements IAdminUsecase {
     console.log("usecasePage==", page);
 
     const employeList = await this._employeeRepo.listEmploye(page)
-    console.log("count---",employeList?.count);
+    console.log("hellothere===>",employeList);
     
+    console.log("count---", employeList?.count);
+
     if (employeList) {
       return {
         status: 200,
         message: "success",
         employeList: employeList.employeList,
-        count:employeList.count
+        count: employeList.count
       }
     } else {
       return {
@@ -191,6 +194,27 @@ class AdminUseCase implements IAdminUsecase {
     }
   }
 
+  async submitLeadsForm(leadData: LeadData): Promise<AdminOutPut> {
+    console.log(leadData);
+    const response = await this._leadRepo.createLead(leadData)
+    if (response) {
+      return {
+        status: 200,
+        message: 'Successfully updated'
+      }
+    } else {
+      return {
+        status: 400,
+        message: 'Somthing went wrong'
+      }
+    }
+
+  }
+
+  
+
 }
+
+
 
 export default AdminUseCase

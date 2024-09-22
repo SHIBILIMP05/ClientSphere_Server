@@ -33,22 +33,29 @@ class EmployeeRepository implements IEmployeeRepository {
         }
     }
 
-    async listEmploye(page: number): Promise<AdminOutPut | null> {
+    async listEmploye(page?: number): Promise<AdminOutPut | null> {
         try {
-            console.log("repoPage==", page);
-            const skipCount:number = page*8
-            const totalCount:number = await employeeModel.find().countDocuments()
-            console.log("count===>",totalCount);
-            
-            const employeList = await employeeModel.find().skip(skipCount).limit(8)
-            
-            if (employeList) {
+            const limit: number = 8;  
+            console.log("am in listing");
+
+            if (typeof page === 'number' && page >= 0) {
+               
+                const skipCount: number = page * limit;
+                const totalCount: number = await employeeModel.countDocuments();
+
+                const employeList = await employeeModel.find().skip(skipCount).limit(limit);
+
                 return {
-                    employeList:employeList,
-                    count:Math.ceil(totalCount/8)
-                }
+                    employeList,
+                    count: Math.ceil(totalCount / limit),  
+                };
             } else {
-                return null
+               
+                const employeList = await employeeModel.find();
+
+                return {
+                    employeList
+                };
             }
         } catch (error) {
             console.error(error);
