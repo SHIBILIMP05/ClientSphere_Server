@@ -1,4 +1,5 @@
 import EmployeeRepository from "../infrastructure/repositories/employeeRepository";
+import LeadsRepository from "../infrastructure/repositories/leadsRepository";
 import IEmployeeUseCase from "../interfaces/IUseCases/IEmployeeUseCase";
 import Employee from "../interfaces/models/employee";
 import { EmployeeOutPut } from "../interfaces/models/employeeOutPut.ts";
@@ -9,6 +10,7 @@ import ManagePassword from "../providers/managePassword";
 class EmployeeUseCase implements IEmployeeUseCase {
   constructor(
     private readonly _employeeRepo: EmployeeRepository,
+    private readonly _leadRepo: LeadsRepository,
     private readonly _jwt: Jwt,
     private readonly _managePassword: ManagePassword
   ) { }
@@ -63,6 +65,38 @@ class EmployeeUseCase implements IEmployeeUseCase {
       }
     }
 
+  }
+
+  async listMyLeads(empId:string):Promise<EmployeeOutPut>{
+    const response = await this._leadRepo.listLeads_WithEmpId(empId)
+    if(response){
+      return{
+        status:200,
+        message:'Data Successfully listed',
+        leadsList:response
+      }
+    }else{
+      return {
+        status: 400,
+        message: 'Data Not Found'
+      } 
+    }
+  }
+
+  async fetchLeadInfo(leadId:string):Promise<EmployeeOutPut>{
+    const response = await this._leadRepo.fetchLeadInfo(leadId)
+    if(response){
+      return{
+        status:200,
+        message:'Data Successfully listed',
+        leadInfo:response
+      }
+    }else{
+      return {
+        status: 400,
+        message: 'Data Not Found'
+      } 
+    }
   }
 }
 

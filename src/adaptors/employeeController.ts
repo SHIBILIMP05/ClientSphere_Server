@@ -65,11 +65,45 @@ class EmployeController {
             if (editProfileResponse) {
                 return res.status(200).json({ editProfileResponse })
             } else {
-                return res.status(200).json({ editProfileResponse })
+                return res.status(400).json({ editProfileResponse })
             }
         } catch (error) {
             console.error(error);
 
+        }
+    }
+
+    async listMyLeads(req:Request,res:Response){
+        try {
+            const empId = req.params.empId
+            console.log("emId",empId);
+            
+            const response = await this._employeeUseCase.listMyLeads(empId)
+            if (response) {
+                return res.status(200).json({ response })
+            } else {
+                return res.status(400).json({ response })
+            }
+        } catch (error) {
+            console.error(error);
+            
+        }
+    }
+
+    async fetchLeadInfo(req:Request,res:Response){
+        try {
+            const leadId = req.params.leadId
+            console.log("leadId",leadId);
+            
+            const response = await this._employeeUseCase.fetchLeadInfo(leadId)
+            if (response) {
+                return res.status(200).json({ response })
+            } else {
+                return res.status(400).json({ response })
+            }
+        } catch (error) {
+            console.error(error);
+            
         }
     }
 

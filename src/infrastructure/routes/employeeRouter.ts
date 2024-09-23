@@ -4,12 +4,15 @@ import { blockCheck } from "../../middlewares/employeeAuth"
 
 const router =express.Router()
 
-/* Admin rout handlers */
-
+/* Employee rout handlers */
 const handleEditProfile = (req:Request,res:Response)=>employeController.editProfile(req,res)
-
-/* Rout for employe creation */
-
+const handleListMyLeads = (req:Request,res:Response)=>employeController.listMyLeads(req,res)
+const handleFetchLeadInfo = (req:Request,res:Response)=>employeController.fetchLeadInfo(req,res)
+/* Rout for employee management */
 router.post('/:empId/editProfile',blockCheck,handleEditProfile)
+
+/* Rout for lead management */
+router.get('/:empId/listMyLeads',blockCheck,handleListMyLeads)
+router.get('/:empId/fetchLeadInfo/:leadId',blockCheck,handleFetchLeadInfo)
 
 export default router

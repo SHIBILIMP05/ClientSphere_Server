@@ -36,11 +36,15 @@ const leadsSchema: Schema<LeadData> = new Schema({
         type: String
     },
     lead_holder: {
-        type: { type: mongoose.Schema.Types.ObjectId,
-        ref: 'employee' }
+        type: String,
+        ref: 'employee',
+        
     },
     lead_status: {
         type: String
+    },
+    date:{
+        type:Date
     }
 })
 

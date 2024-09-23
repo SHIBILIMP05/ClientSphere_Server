@@ -10,5 +10,6 @@ export interface LeadData {
     country?:string,
     pinCode?:string,
     lead_holder?:string,
-    lead_status?:string
-}
+    lead_status?:string,
+    date?:Date
+} 

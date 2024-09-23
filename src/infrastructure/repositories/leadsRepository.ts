@@ -11,7 +11,8 @@ class LeadsRepository implements ILeadsRepository {
             const lead = await leadsModel.create({
                 ...leadData,
                 lead_status: 'New lead',
-                lead_holder: 'none'
+                lead_holder: 'none',
+                date:new Date()
             })
             if (lead) {
                 return lead
@@ -42,12 +43,32 @@ class LeadsRepository implements ILeadsRepository {
         )
         if (assignEmployee.acknowledged && assignEmployee.modifiedCount > 0) {
             const updatedLeads = await leadsModel.find({ lead_holder: 'none' });
-            return updatedLeads; // Return the updated leads
+            return updatedLeads; 
         } else {
             console.error('No leads were updated');
             return null;
         }
 
+    }
+
+    async listLeads_WithEmpId(empId:string):Promise<LeadData[]|null>{
+        const leadList = await leadsModel.find({lead_holder:empId})
+        if(leadList){
+            return leadList
+        }else{
+            return null
+        }
+    }
+
+    async fetchLeadInfo(leadId:string):Promise<LeadData|null>{
+        const leadInfo = await leadsModel.findById(leadId).populate('lead_holder')
+        console.log('leadInfo',leadInfo);
+        
+        if(leadInfo){
+            return leadInfo
+        }else{
+            return null
+        }
     }
 }
 export default LeadsRepository

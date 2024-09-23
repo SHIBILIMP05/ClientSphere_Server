@@ -4,6 +4,7 @@ interface ILeadsRepository {
     createLead(leadData: LeadData): Promise<LeadData | null>,
     listNewLeads(): Promise<LeadData[] | null>,
     assignToEmploye(empId:string,selectedRows:string[]):Promise<LeadData[]|null>,
+    listLeads_WithEmpId(empId:string):Promise<LeadData[]|null>,
 }
 
 export default ILeadsRepository 

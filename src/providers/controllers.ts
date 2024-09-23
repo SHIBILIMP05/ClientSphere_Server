@@ -32,7 +32,7 @@ const leadsRepository = new LeadsRepository()
 /* UseCases */
 const adminUseCase = new AdminUseCase(adminRepository,employeeRepository,headRepository,leadsRepository,jwt,generateCredential,managePassword,sendMail)
 const headUseCase = new HeadUseCase(headRepository,leadsRepository,employeeRepository,jwt,managePassword)
-const employeUsecase = new EmployeeUseCase(employeeRepository,jwt,managePassword)
+const employeUsecase = new EmployeeUseCase(employeeRepository,leadsRepository,jwt,managePassword)
 
 
 /* Controllers */
