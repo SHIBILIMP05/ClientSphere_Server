@@ -5,6 +5,7 @@ import HeadController from "../adaptors/headController";
 import AdminRepository from "../infrastructure/repositories/adminRepository";
 import EmployeeRepository from "../infrastructure/repositories/employeeRepository";
 import HeadRepository from "../infrastructure/repositories/headRepository";
+import HistoryRepository from "../infrastructure/repositories/historyRepository";
 import LeadsRepository from "../infrastructure/repositories/leadsRepository";
 import AdminUseCase from "../use_cases/adminUseCase";
 import EmployeeUseCase from "../use_cases/employeeUseCase";
@@ -26,13 +27,14 @@ const adminRepository = new AdminRepository()
 const headRepository = new HeadRepository()
 const employeeRepository = new EmployeeRepository()
 const leadsRepository = new LeadsRepository()
+const historyRepository = new HistoryRepository()
 
 
 
 /* UseCases */
 const adminUseCase = new AdminUseCase(adminRepository,employeeRepository,headRepository,leadsRepository,jwt,generateCredential,managePassword,sendMail)
 const headUseCase = new HeadUseCase(headRepository,leadsRepository,employeeRepository,jwt,managePassword)
-const employeUsecase = new EmployeeUseCase(employeeRepository,leadsRepository,jwt,managePassword)
+const employeUsecase = new EmployeeUseCase(employeeRepository,leadsRepository,historyRepository,jwt,managePassword)
 
 
 /* Controllers */

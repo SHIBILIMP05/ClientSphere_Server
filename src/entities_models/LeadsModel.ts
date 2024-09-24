@@ -32,6 +32,9 @@ const leadsSchema: Schema<LeadData> = new Schema({
     country: {
         type: String
     },
+    state: {
+        type: String
+    },
     pinCode: {
         type: String
     },

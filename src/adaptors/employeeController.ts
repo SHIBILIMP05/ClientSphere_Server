@@ -16,7 +16,7 @@ class EmployeController {
             console.log("control data ===", employe);
 
             switch (employe.status) {
-                
+
                 case 200:
                     return res.status(200).json({ employe })
                 case 400:
@@ -24,7 +24,7 @@ class EmployeController {
                 case 401:
                     return res.status(401).json({ employe })
                 default:
-                    return 
+                    return
 
             }
 
@@ -73,11 +73,11 @@ class EmployeController {
         }
     }
 
-    async listMyLeads(req:Request,res:Response){
+    async listMyLeads(req: Request, res: Response) {
         try {
             const empId = req.params.empId
-            console.log("emId",empId);
-            
+            console.log("emId", empId);
+
             const response = await this._employeeUseCase.listMyLeads(empId)
             if (response) {
                 return res.status(200).json({ response })
@@ -86,15 +86,15 @@ class EmployeController {
             }
         } catch (error) {
             console.error(error);
-            
+
         }
     }
 
-    async fetchLeadInfo(req:Request,res:Response){
+    async fetchLeadInfo(req: Request, res: Response) {
         try {
             const leadId = req.params.leadId
-            console.log("leadId",leadId);
-            
+            console.log("leadId", leadId);
+
             const response = await this._employeeUseCase.fetchLeadInfo(leadId)
             if (response) {
                 return res.status(200).json({ response })
@@ -103,7 +103,42 @@ class EmployeController {
             }
         } catch (error) {
             console.error(error);
-            
+
+        }
+    }
+
+    async updateLeadInfo(req: Request, res: Response) {
+        try {
+            const empId = req.params.empId
+            const leadId = req.params.leadId
+            const leadData = req.body.leadData
+            console.log("datass", leadId, leadData);
+            const response = await this._employeeUseCase.updateLeadInfo(leadData, leadId, empId)
+            if (response) {
+                return res.status(200).json({ response })
+            } else {
+                return res.status(400).json({ response })
+            }
+
+        } catch (error) {
+            console.error(error);
+
+        }
+    }
+
+    async listHistory(req: Request, res: Response) {
+        try {
+            const empId = req.params.empId
+            console.log("emp", empId);
+            const response = await this._employeeUseCase.listHistory(empId)
+            if (response) {
+                return res.status(200).json({ response })
+            } else {
+                return res.status(400).json({ response })
+            }
+        } catch (error) {
+            console.error(error);
+
         }
     }
 

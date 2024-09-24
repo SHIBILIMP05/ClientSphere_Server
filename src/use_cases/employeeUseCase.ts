@@ -1,8 +1,10 @@
 import EmployeeRepository from "../infrastructure/repositories/employeeRepository";
+import HistoryRepository from "../infrastructure/repositories/historyRepository";
 import LeadsRepository from "../infrastructure/repositories/leadsRepository";
 import IEmployeeUseCase from "../interfaces/IUseCases/IEmployeeUseCase";
 import Employee from "../interfaces/models/employee";
 import { EmployeeOutPut } from "../interfaces/models/employeeOutPut.ts";
+import { LeadData } from "../interfaces/models/leads";
 import Jwt from "../providers/jwt";
 import ManagePassword from "../providers/managePassword";
 
@@ -11,6 +13,7 @@ class EmployeeUseCase implements IEmployeeUseCase {
   constructor(
     private readonly _employeeRepo: EmployeeRepository,
     private readonly _leadRepo: LeadsRepository,
+    private readonly _historyRepo: HistoryRepository,
     private readonly _jwt: Jwt,
     private readonly _managePassword: ManagePassword
   ) { }
@@ -67,35 +70,78 @@ class EmployeeUseCase implements IEmployeeUseCase {
 
   }
 
-  async listMyLeads(empId:string):Promise<EmployeeOutPut>{
+  async listMyLeads(empId: string): Promise<EmployeeOutPut> {
     const response = await this._leadRepo.listLeads_WithEmpId(empId)
-    if(response){
-      return{
-        status:200,
-        message:'Data Successfully listed',
-        leadsList:response
+    if (response) {
+      return {
+        status: 200,
+        message: 'Data Successfully listed',
+        leadsList: response
       }
-    }else{
+    } else {
       return {
         status: 400,
         message: 'Data Not Found'
-      } 
+      }
     }
   }
 
-  async fetchLeadInfo(leadId:string):Promise<EmployeeOutPut>{
+  async fetchLeadInfo(leadId: string): Promise<EmployeeOutPut> {
     const response = await this._leadRepo.fetchLeadInfo(leadId)
-    if(response){
-      return{
-        status:200,
-        message:'Data Successfully listed',
-        leadInfo:response
+    if (response) {
+      return {
+        status: 200,
+        message: 'Data Successfully listed',
+        leadInfo: response
       }
-    }else{
+    } else {
       return {
         status: 400,
         message: 'Data Not Found'
-      } 
+      }
+    }
+  }
+
+  async updateLeadInfo(leadData: LeadData, leadId: string, empId: string): Promise<EmployeeOutPut> {
+    const response = await this._leadRepo.updateLeadInfo(leadId, leadData)
+    if (response) {
+      console.log("response", response);
+      const message = 'Lead info Updated'
+      const storeHistory = await this._historyRepo.addHistory(response, empId, leadId, message)
+      if (storeHistory) {
+
+        return {
+          status: 200,
+          message: 'Data Successfully Updated',
+          leadInfo: response
+        }
+      } else {
+        return {
+          status: 400,
+          message: 'Somthing went wrong Histrory is not traked'
+        }
+      }
+    } else {
+      return {
+        status: 400,
+        message: 'Somthing went wrong pleas try again'
+      }
+    }
+  }
+
+  async listHistory(empId: string): Promise<EmployeeOutPut> {
+    const response = await this._historyRepo.listHistory(empId)
+    if (response) {
+      return {
+        status: 200,
+        message: 'History founded Successfully',
+        historyList: response
+      }
+    } else {
+      return {
+        status: 400,
+        message: 'Data not found'
+      }
     }
   }
 }

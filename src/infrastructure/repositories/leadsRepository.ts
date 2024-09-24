@@ -12,7 +12,7 @@ class LeadsRepository implements ILeadsRepository {
                 ...leadData,
                 lead_status: 'New lead',
                 lead_holder: 'none',
-                date:new Date()
+                date: new Date()
             })
             if (lead) {
                 return lead
@@ -43,7 +43,7 @@ class LeadsRepository implements ILeadsRepository {
         )
         if (assignEmployee.acknowledged && assignEmployee.modifiedCount > 0) {
             const updatedLeads = await leadsModel.find({ lead_holder: 'none' });
-            return updatedLeads; 
+            return updatedLeads;
         } else {
             console.error('No leads were updated');
             return null;
@@ -51,22 +51,50 @@ class LeadsRepository implements ILeadsRepository {
 
     }
 
-    async listLeads_WithEmpId(empId:string):Promise<LeadData[]|null>{
-        const leadList = await leadsModel.find({lead_holder:empId})
-        if(leadList){
+    async listLeads_WithEmpId(empId: string): Promise<LeadData[] | null> {
+        const leadList = await leadsModel.find({ lead_holder: empId })
+        if (leadList) {
             return leadList
-        }else{
+        } else {
             return null
         }
     }
 
-    async fetchLeadInfo(leadId:string):Promise<LeadData|null>{
+    async fetchLeadInfo(leadId: string): Promise<LeadData | null> {
         const leadInfo = await leadsModel.findById(leadId).populate('lead_holder')
-        console.log('leadInfo',leadInfo);
-        
-        if(leadInfo){
+        console.log('leadInfo', leadInfo);
+
+        if (leadInfo) {
             return leadInfo
-        }else{
+        } else {
+            return null
+        }
+    }
+
+    async updateLeadInfo(leadId: string, leadData: LeadData): Promise<LeadData | null> {
+        const updatedLead = await leadsModel.findOneAndUpdate(
+            { _id: leadId },
+            {
+                $set: {
+                    name: leadData.name,
+                    email: leadData.email,
+                    phone: leadData.phone,
+                    company: leadData.company,
+                    leadSource: leadData.leadSource,
+                    city: leadData.city,
+                    country: leadData.country,
+                    state: leadData.state,
+                    pinCode: leadData.pinCode,
+                    lead_status: leadData.lead_status,
+                },
+            },
+            { new: true }
+        );
+        console.log("updated data",updatedLead);
+        
+        if (updatedLead) {
+            return updatedLead
+        } else {
             return null
         }
     }

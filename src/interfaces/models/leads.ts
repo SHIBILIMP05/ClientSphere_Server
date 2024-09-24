@@ -8,6 +8,7 @@ export interface LeadData {
     address?:string;
     city?:string;
     country?:string,
+    state?:string,
     pinCode?:string,
     lead_holder?:string,
     lead_status?:string,
