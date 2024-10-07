@@ -36,7 +36,6 @@ class EmployeeRepository implements IEmployeeRepository {
     async listEmploye(page?: number): Promise<AdminOutPut | null> {
         try {
             const limit: number = 8;  
-            console.log("am in listing");
 
             if (typeof page === 'number' && page >= 0) {
                

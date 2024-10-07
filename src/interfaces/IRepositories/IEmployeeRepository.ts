@@ -1,5 +1,6 @@
 import { AdminOutPut } from "../models/adminOutPut";
 import Employee from "../models/employee";
+import { LeadData } from "../models/leads";
 
 
 interface IEmployeeRepository{
@@ -9,6 +10,7 @@ interface IEmployeeRepository{
     listEmploye(page:number):Promise<AdminOutPut|null>,
     updateData(editDatas: Employee): Promise<Employee | null>,
     restrictAction(id:string,value:boolean):Promise<Employee|null>,
+    
 
 }
 

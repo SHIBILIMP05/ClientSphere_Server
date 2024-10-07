@@ -60,13 +60,14 @@ class HeadUseCase implements IHeadUseCase {
 
     }
 
-    async listNewLeads():Promise<HeadOutPut>{
-        const response = await this._leadRepo.listNewLeads()
+    async listNewLeads(page:number):Promise<HeadOutPut>{
+        const response = await this._leadRepo.listNewLeads(page)
         if(response){
             return{
                 status:200,
                 message:'Success response',
-                newLeads:response
+                newLeads:response.newLeads,
+                count:response.count
             }
         }else{
             return {

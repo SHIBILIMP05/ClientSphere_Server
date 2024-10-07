@@ -10,13 +10,16 @@ const handleListMyLeads = (req:Request,res:Response)=>employeController.listMyLe
 const handleFetchLeadInfo = (req:Request,res:Response)=>employeController.fetchLeadInfo(req,res)
 const handleUpdateLeadInfo = (req:Request,res:Response)=>employeController.updateLeadInfo(req,res)
 const handleListHistory = (req:Request,res:Response)=>employeController.listHistory(req,res)
+const handleAddLead = (req:Request,res:Response)=>employeController.addLead(req,res)
+
 /* Rout for employee management */
 router.post('/:empId/editProfile',blockCheck,handleEditProfile)
 
 /* Rout for lead management */
-router.get('/:empId/listMyLeads',blockCheck,handleListMyLeads)
+router.get('/:empId/listMyLeads/:pageNo',blockCheck,handleListMyLeads)
 router.get('/:empId/fetchLeadInfo/:leadId',blockCheck,handleFetchLeadInfo)
 router.post('/:empId/updateLeadInfo/:leadId',blockCheck,handleUpdateLeadInfo)
+router.post('/:empId/addLead',blockCheck,handleAddLead)
 
 /* Rout for history management */
 router.get('/:empId/listHistory',blockCheck,handleListHistory)

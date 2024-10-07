@@ -70,13 +70,14 @@ class EmployeeUseCase implements IEmployeeUseCase {
 
   }
 
-  async listMyLeads(empId: string): Promise<EmployeeOutPut> {
-    const response = await this._leadRepo.listLeads_WithEmpId(empId)
+  async listMyLeads(empId: string,page:number,search?:string,status?:string,date?:string): Promise<EmployeeOutPut> {
+    const response = await this._leadRepo.listLeads_WithEmpId(empId,page,search,status,date)
     if (response) {
       return {
         status: 200,
         message: 'Data Successfully listed',
-        leadsList: response
+        leadsList: response.leadsList,
+        count:response.count
       }
     } else {
       return {
@@ -144,6 +145,22 @@ class EmployeeUseCase implements IEmployeeUseCase {
       }
     }
   }
+
+  async addLead(empId:string,leadData:LeadData):Promise<EmployeeOutPut>{
+    const response = await this._leadRepo.addLeadByEmployee(empId,leadData)
+    if (response) {
+      return {
+        status: 200,
+        message: 'Lead profile created Successfully',
+      }
+    } else {
+      return {
+        status: 400,
+        message: 'Somthing went wrong, pleas try again.'
+      }
+    }
+  }
+
 }
 
 export default EmployeeUseCase

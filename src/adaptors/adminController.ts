@@ -61,8 +61,6 @@ class AdminController {
     async listEmploye(req: Request, res: Response) {
         try {
             const page: number = parseInt(req.params.pageNo)
-            console.log("controlePage==", page);
-
             const employeList = await this._adminUseCase.listEmploye(page)
             if (employeList) {
                 return res.status(200).json({ employeList })

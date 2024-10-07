@@ -3,11 +3,12 @@ import { History } from "./history";
 import { LeadData } from "./leads";
 
 export interface EmployeeOutPut {
-    status: number,
-    message: string,
+    status?: number,
+    message?: string,
     accessToken?: string,
     data?: Employee,
     leadsList?: LeadData[],
     leadInfo?: LeadData,
-    historyList?: History[]
+    historyList?: History[],
+    count?:number
 }

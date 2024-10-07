@@ -15,7 +15,7 @@ router.post('/editProfile',handleEditProfile)
 router.get('/listEmployee',handleEmployeeList)
 
 /* Rout for leads management */
-router.get('/listNewLeads',handleListNewLeads)
+router.get('/listNewLeads/:pageNo',handleListNewLeads)
 router.post('/assignLeads/:empId',handleAssignLeads)
 
 export default router

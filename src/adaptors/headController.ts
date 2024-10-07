@@ -67,7 +67,8 @@ class HeadController {
 
     async listNewLeads(req: Request, res: Response) {
         try {
-            const response = await this._headUseCase.listNewLeads()
+            const page: number = parseInt(req.params.pageNo)
+            const response = await this._headUseCase.listNewLeads(page)
             if (response) {
                 return res.status(200).json({ response })
 

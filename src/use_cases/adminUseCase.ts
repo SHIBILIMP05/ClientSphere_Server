@@ -118,12 +118,9 @@ class AdminUseCase implements IAdminUsecase {
   }
 
   async listEmploye(page: number): Promise<AdminOutPut> {
-    console.log("usecasePage==", page);
 
     const employeList = await this._employeeRepo.listEmploye(page)
-    console.log("hellothere===>",employeList);
     
-    console.log("count---", employeList?.count);
 
     if (employeList) {
       return {

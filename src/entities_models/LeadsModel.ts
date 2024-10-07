@@ -49,7 +49,8 @@ const leadsSchema: Schema<LeadData> = new Schema({
     date:{
         type:Date
     }
-})
+
+},{timestamps:true})
 
 const leadsModel = model<LeadData>('leads', leadsSchema)
 

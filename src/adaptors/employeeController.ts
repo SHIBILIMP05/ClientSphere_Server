@@ -76,9 +76,16 @@ class EmployeController {
     async listMyLeads(req: Request, res: Response) {
         try {
             const empId = req.params.empId
-            console.log("emId", empId);
+            const page = parseInt(req.params.pageNo)
+            console.log("page",page);
+            
+            const search = typeof req.query.search === 'string' ? req.query.search : undefined;
+            const status = typeof req.query.status === 'string' ? req.query.status : undefined;
+            const dateStr = typeof req.query.date === 'string' ? req.query.date : undefined;
 
-            const response = await this._employeeUseCase.listMyLeads(empId)
+           
+
+            const response = await this._employeeUseCase.listMyLeads(empId,page, search, status, dateStr)
             if (response) {
                 return res.status(200).json({ response })
             } else {
@@ -131,6 +138,23 @@ class EmployeController {
             const empId = req.params.empId
             console.log("emp", empId);
             const response = await this._employeeUseCase.listHistory(empId)
+            if (response) {
+                return res.status(200).json({ response })
+            } else {
+                return res.status(400).json({ response })
+            }
+        } catch (error) {
+            console.error(error);
+
+        }
+    }
+
+    async addLead(req: Request, res: Response) {
+        try {
+            const empId = req.params.empId
+            const leadData = req.body.leadData
+            console.log("empid", empId);
+            const response = await this._employeeUseCase.addLead(empId, leadData)
             if (response) {
                 return res.status(200).json({ response })
             } else {
