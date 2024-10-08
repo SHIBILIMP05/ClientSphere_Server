@@ -10,7 +10,8 @@ interface IEmployeeUseCase{
     fetchLeadInfo(leadId:string):Promise<EmployeeOutPut>, 
     updateLeadInfo(leadData:LeadData,leadId:string,empId:string):Promise<EmployeeOutPut>,
     listHistory(empId:string):Promise<EmployeeOutPut>,
-    addLead(empId:string,leadData:LeadData):Promise<EmployeeOutPut>
+    addLead(empId:string,leadData:LeadData):Promise<EmployeeOutPut>,
+    excelUpload(leads:LeadData[],empId:string):Promise<EmployeeOutPut>
 }
 
 export default IEmployeeUseCase

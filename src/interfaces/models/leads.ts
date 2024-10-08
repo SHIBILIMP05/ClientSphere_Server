@@ -3,8 +3,8 @@ export interface LeadData {
     email:string;
     phone:string;
     company:string;
-    leadSource:string;
-    message:string;
+    leadSource?:string;
+    message?:string;
     address?:string;
     city?:string;
     country?:string,

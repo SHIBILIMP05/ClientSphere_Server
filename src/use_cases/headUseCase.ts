@@ -56,7 +56,7 @@ class HeadUseCase implements IHeadUseCase {
                 status: 400,
                 message: 'Data Not Found'
             }
-        }
+        } 
 
     }
 

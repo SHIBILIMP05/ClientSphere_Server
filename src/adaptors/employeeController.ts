@@ -2,6 +2,11 @@ import { Request, Response } from "express";
 import EmployeeUseCase from "../use_cases/employeeUseCase";
 import fileUpload from "express-fileupload";
 import cloudinary from "../providers/cloudinary";
+// import xlsx from 'xlsx';
+import XLSX from 'xlsx';
+import path from 'path';
+import fs from 'fs';
+import { LeadData } from "../interfaces/models/leads";
 
 
 class EmployeController {
@@ -77,15 +82,15 @@ class EmployeController {
         try {
             const empId = req.params.empId
             const page = parseInt(req.params.pageNo)
-            console.log("page",page);
-            
+            console.log("page", page);
+
             const search = typeof req.query.search === 'string' ? req.query.search : undefined;
             const status = typeof req.query.status === 'string' ? req.query.status : undefined;
             const dateStr = typeof req.query.date === 'string' ? req.query.date : undefined;
 
-           
 
-            const response = await this._employeeUseCase.listMyLeads(empId,page, search, status, dateStr)
+
+            const response = await this._employeeUseCase.listMyLeads(empId, page, search, status, dateStr)
             if (response) {
                 return res.status(200).json({ response })
             } else {
@@ -155,6 +160,51 @@ class EmployeController {
             const leadData = req.body.leadData
             console.log("empid", empId);
             const response = await this._employeeUseCase.addLead(empId, leadData)
+            if (response) {
+                return res.status(200).json({ response })
+            } else {
+                return res.status(400).json({ response })
+            }
+        } catch (error) {
+            console.error(error);
+
+        }
+    }
+
+    async excelUpload(req: Request, res: Response) {
+        try {
+            const UPLOAD_DIR = path.join('./src/', 'uploads');
+            const empId = req.params.empId
+            if (!req.files || !req.files.excelFile) {
+                return res.status(400).send('No files were uploaded.');
+            }
+
+            const file = req.files.excelFile as fileUpload.UploadedFile;
+            const filePath = path.join(UPLOAD_DIR, file.name);
+
+            
+            await file.mv(filePath);
+
+           
+            const workbook = XLSX.readFile(filePath);
+
+            
+            const sheetName = workbook.SheetNames[0];
+            const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+           
+            const leads = sheetData.map((lead: any) => ({
+                name: lead['name'] || null,
+                email: lead['email'] || null,
+                phone: lead['phone'] || null,
+                date: lead['date'] || null,
+                company: lead['company'] || null,              
+            }));
+
+           
+            fs.unlinkSync(filePath);
+
+            const response = await this._employeeUseCase.excelUpload(leads,empId);
             if (response) {
                 return res.status(200).json({ response })
             } else {

@@ -11,6 +11,7 @@ const handleFetchLeadInfo = (req:Request,res:Response)=>employeController.fetchL
 const handleUpdateLeadInfo = (req:Request,res:Response)=>employeController.updateLeadInfo(req,res)
 const handleListHistory = (req:Request,res:Response)=>employeController.listHistory(req,res)
 const handleAddLead = (req:Request,res:Response)=>employeController.addLead(req,res)
+const handleExcelUpload = (req:Request,res:Response)=>employeController.excelUpload(req,res)
 
 /* Rout for employee management */
 router.post('/:empId/editProfile',blockCheck,handleEditProfile)
@@ -20,6 +21,7 @@ router.get('/:empId/listMyLeads/:pageNo',blockCheck,handleListMyLeads)
 router.get('/:empId/fetchLeadInfo/:leadId',blockCheck,handleFetchLeadInfo)
 router.post('/:empId/updateLeadInfo/:leadId',blockCheck,handleUpdateLeadInfo)
 router.post('/:empId/addLead',blockCheck,handleAddLead)
+router.post('/:empId/upload-excelFile',blockCheck,handleExcelUpload)
 
 /* Rout for history management */
 router.get('/:empId/listHistory',blockCheck,handleListHistory)

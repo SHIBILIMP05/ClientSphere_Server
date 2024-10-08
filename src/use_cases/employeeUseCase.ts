@@ -161,6 +161,23 @@ class EmployeeUseCase implements IEmployeeUseCase {
     }
   }
 
+  async excelUpload(leads:LeadData[],empId:string):Promise<EmployeeOutPut>{
+    
+    
+    const response = await this._leadRepo.excelUpload(leads,empId)
+    if (response) {
+      return {
+        status: 200,
+        message: 'Leads data uploaded Successfully',
+      }
+    } else {
+      return {
+        status: 400,
+        message: 'Somthing went wrong, pleas try again.'
+      }
+    }
+  }
+
 }
 
 export default EmployeeUseCase

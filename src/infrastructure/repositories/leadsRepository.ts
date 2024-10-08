@@ -94,7 +94,7 @@ class LeadsRepository implements ILeadsRepository {
         }
         const totalCount: number = await leadsModel.countDocuments(query);
         const leadsList = await leadsModel.find(query).skip(skipCount).limit(limit).sort({ date: -1 })
-       console.log("leadsList==>",leadsList)
+        console.log("leadsList==>", leadsList)
         if (leadsList) {
             return {
                 leadsList,
@@ -157,6 +157,24 @@ class LeadsRepository implements ILeadsRepository {
         if (addLead) {
             return addLead
         } else {
+            return null
+        }
+    }
+
+    async excelUpload(leads: LeadData[],empId:string): Promise<LeadData[]|null> {
+        
+        const modifiedLeads = leads.map(lead => ({
+            ...lead, 
+            lead_status: 'New lead', 
+            lead_holder: empId,      
+            date: new Date()         
+        }));
+        const insertedLeads = await leadsModel.insertMany(modifiedLeads);
+        console.log("data", insertedLeads);
+        
+        if(insertedLeads){
+            return insertedLeads
+        }else{
             return null
         }
     }
